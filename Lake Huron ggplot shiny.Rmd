@@ -1,0 +1,58 @@
+---
+title: "Lake Huron with ggplot"
+author: "David Anderson"
+date: "September 23, 2018"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**I took the same document that we used in class, changed LakeHuron to a dataframe, and used ggplot to create the same effect that our previous shiny application displayed**
+
+\vspace{20pt}
+
+This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately. 
+
+To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+
+## Inputs and Outputs
+
+You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot.
+
+
+```{r eruptions, echo=FALSE}
+library(ggplot2)
+huron <- data.frame(year = 1875:1972, level = as.vector(LakeHuron))
+inputPanel(
+  
+  
+  checkboxInput("smooth", label = "Add smoother?", value = FALSE)
+)
+
+renderPlot({
+  
+  if(input$smooth){
+    ggplot(data = huron, mapping = aes(x = year, y = level))+
+        geom_point(color = "blue")+
+        geom_smooth(color = "red", se = FALSE)+
+        geom_line()
+    }else{
+    ggplot(data = huron)+
+        geom_line(mapping = aes(x = year, y = level))}; 
+})
+
+
+
+
+
+
+
+```
+
+
+
+
+
